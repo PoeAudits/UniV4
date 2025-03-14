@@ -72,6 +72,7 @@ contract TokenWithPoolAndLiquidity is ERC20("TokenPoolLiquidity", "TPL") {
             type(uint160).max,
             type(uint48).max
         );
+        console.logBytes(params[1]);
 
         init.positionManager.multicall(params);
     }
