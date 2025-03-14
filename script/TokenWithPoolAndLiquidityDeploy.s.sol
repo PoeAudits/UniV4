@@ -13,16 +13,18 @@ contract TokenWithPoolAndLiquidityDeploy is Script, BaseImports {
 
     function run() public {
         IHooks hook = setupHook();
-        TokenWithPoolAndLiquidity.PoolInit
-            memory init = TokenWithPoolAndLiquidity.PoolInit({
+        TokenWithPoolAndLiquidity.PoolInit memory init = TokenWithPoolAndLiquidity
+            .PoolInit({
                 positionManager: positionManager,
+                permit2: permit2,
                 pairedCurrency: Currency.wrap(address(weth)),
                 hookContract: hook,
                 mintAmount: 1e27,
                 lpFee: 3000,
                 tickSpacing: 60,
-                startingPrice: 79228162514264337593543950336,
-                hookData: ""
+                startingPrice: 79228162514264337593543950336, // 1 to 1
+                hookDataInit: "",
+                hookDataModify: ""
             });
 
         target = new TokenWithPoolAndLiquidity(init);

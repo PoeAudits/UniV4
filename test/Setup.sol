@@ -14,9 +14,9 @@ import {IPositionManager} from "lib/v4-periphery/src/interfaces/IPositionManager
 import {Currency, CurrencyLibrary} from "lib/v4-core/src/types/Currency.sol";
 import {PoolKey} from "lib/v4-core/src/types/PoolKey.sol";
 
-import {TokenWithPoolDeploy} from "script/TokenWithPoolDeploy.s.sol";
+import {TokenWithPoolAndLiquidityDeploy} from "script/TokenWithPoolAndLiquidityDeploy.s.sol";
 
-contract Setup is Test, TokenWithPoolDeploy {
+contract Setup is Test, TokenWithPoolAndLiquidityDeploy {
     address internal _hook = address(0x1088);
 
     address _alice = address(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266);
