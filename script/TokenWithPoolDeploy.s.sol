@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "lib/forge-std/src/Script.sol";
-import "test/BaseImports.sol";
+import "test/base/BaseScript.sol";
 import {TokenWithPool} from "src/TokenWithPool.sol";
 import {Currency} from "lib/v4-core/src/types/Currency.sol";
 import {IHooks} from "lib/v4-core/src/interfaces/IHooks.sol";
 
-contract TokenWithPoolDeploy is Script, BaseImports {
+contract TokenWithPoolDeploy is BaseScript {
     TokenWithPool internal target;
     address internal _target;
 

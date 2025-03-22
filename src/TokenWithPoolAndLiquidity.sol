@@ -66,6 +66,11 @@ contract TokenWithPoolAndLiquidity is ERC20("TokenPoolLiquidity", "TPL") {
         _update(address(0), address(this), init.mintAmount);
 
         _approve(address(this), address(init.permit2), type(uint256).max);
+        _approve(
+            address(this),
+            address(init.positionManager),
+            type(uint256).max
+        );
         init.permit2.approve(
             address(this),
             address(init.positionManager),
@@ -86,13 +91,17 @@ contract TokenWithPoolAndLiquidity is ERC20("TokenPoolLiquidity", "TPL") {
         int24 tickUpper;
 
         if (isTokenZero) {
-            tickLower = ((TickMath.getTickAtSqrtPrice(init.startingPrice) /
-                key.tickSpacing) * key.tickSpacing);
+            tickLower =
+                ((TickMath.getTickAtSqrtPrice(init.startingPrice) /
+                    key.tickSpacing) * key.tickSpacing) +
+                key.tickSpacing;
             tickUpper = (TickMath.MAX_TICK / key.tickSpacing) * key.tickSpacing;
         } else {
             tickLower = (TickMath.MIN_TICK / key.tickSpacing) * key.tickSpacing;
-            tickUpper = ((TickMath.getTickAtSqrtPrice(init.startingPrice) /
-                key.tickSpacing) * key.tickSpacing);
+            tickUpper =
+                ((TickMath.getTickAtSqrtPrice(init.startingPrice) /
+                    key.tickSpacing) * key.tickSpacing) -
+                key.tickSpacing;
         }
 
         uint128 liquidity = LiquidityAmounts.getLiquidityForAmounts(

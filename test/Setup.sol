@@ -13,6 +13,7 @@ import {IPoolManager} from "lib/v4-core/src/interfaces/IPoolManager.sol";
 import {IPositionManager} from "lib/v4-periphery/src/interfaces/IPositionManager.sol";
 import {Currency, CurrencyLibrary} from "lib/v4-core/src/types/Currency.sol";
 import {PoolKey} from "lib/v4-core/src/types/PoolKey.sol";
+import {IHooks} from "lib/v4-core/src/interfaces/IHooks.sol";
 
 import {TokenWithPoolAndLiquidityDeploy} from "script/TokenWithPoolAndLiquidityDeploy.s.sol";
 
@@ -52,4 +53,14 @@ contract Setup is Test, TokenWithPoolAndLiquidityDeploy {
         names[_alice] = "Alice";
         names[_bob] = "Bob";
     }
+
+    // function setupFeeOnSwap() internal override returns (IHooks) {
+    //     bytes memory args = abi.encode(poolManager);
+    //     StdCheats.deployCodeTo(
+    //         "out/FeeOnSwapHook.sol/FeeOnSwapHook.json",
+    //         args,
+    //         _hook
+    //     );
+    //     console.log("Setup Hook Complete");
+    // }
 }

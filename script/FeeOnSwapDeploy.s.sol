@@ -2,16 +2,19 @@
 pragma solidity 0.8.26;
 
 import "test/base/BaseScript.sol";
+import {StdCheats} from "lib/forge-std/src/StdCheats.sol";
 import {TokenWithPoolAndLiquidity} from "src/TokenWithPoolAndLiquidity.sol";
+import {FeeOnSwapHook} from "src/Hooks/FeeOnSwapHook.sol";
 import {Currency} from "lib/v4-core/src/types/Currency.sol";
 import {IHooks} from "lib/v4-core/src/interfaces/IHooks.sol";
 
-contract TokenWithPoolAndLiquidityDeploy is BaseScript {
+contract FeeOnSwapDeploy is BaseScript, StdCheats {
     TokenWithPoolAndLiquidity internal target;
     address internal _target;
+    IHooks internal _hook;
 
     function run() public {
-        IHooks hook = setupHook();
+        IHooks hook = setupFeeOnSwap();
         TokenWithPoolAndLiquidity.PoolInit memory init = TokenWithPoolAndLiquidity
             .PoolInit({
                 positionManager: positionManager,
@@ -29,7 +32,13 @@ contract TokenWithPoolAndLiquidityDeploy is BaseScript {
         target = new TokenWithPoolAndLiquidity(init);
     }
 
-    function setupHook() internal virtual returns (IHooks hook) {
-        return IHooks(address(0x0));
+    function setupFeeOnSwap() internal virtual returns (IHooks hook) {
+        // bytes memory args = abi.encode(poolManager);
+        // StdCheats.deployCodeTo(
+        //     "out/FeeOnSwapHook.sol/FeeOnSwapHook.json",
+        //     args,
+        //     _hook
+        // );
+        // console.log("Setup Hook Complete");
     }
 }
