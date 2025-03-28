@@ -10,7 +10,11 @@ import {Currency, CurrencyLibrary} from "lib/v4-core/src/types/Currency.sol";
 import {PoolKey} from "lib/v4-core/src/types/PoolKey.sol";
 import {IHooks} from "lib/v4-core/src/interfaces/IHooks.sol";
 
+import {PositionLibrary, CreatePoolParams} from "src/Libraries/PositionLibrary.sol";
+
 contract TokenWithPool is ERC20("TokenPool", "TP") {
+    using PositionLibrary for IPositionManager;
+
     struct PoolInit {
         IPositionManager positionManager;
         Currency pairedCurrency;
@@ -33,16 +37,15 @@ contract TokenWithPool is ERC20("TokenPool", "TP") {
             hooks: IHooks(init.hookContract)
         });
 
-        bytes[] memory params = new bytes[](1);
+        CreatePoolParams memory createParams = CreatePoolParams({
+            key: key,
+            startingPrice: init.startingPrice,
+            hookData: init.hookData
+        });
+        init.positionManager.CreatePool(createParams);
+    }
 
-        params[0] = abi.encodeWithSelector(
-            init.positionManager.initializePool.selector,
-            key,
-            init.startingPrice,
-            init.hookData
-        );
-
-        // Using multicall to keep consistent with more complex instances
-        init.positionManager.multicall(params);
+    function Mint(address to, uint256 amount) public {
+        _mint(to, amount);
     }
 }

@@ -5,13 +5,17 @@ import "test/base/BaseScript.sol";
 import {TokenWithPool} from "src/TokenWithPool.sol";
 import {Currency} from "lib/v4-core/src/types/Currency.sol";
 import {IHooks} from "lib/v4-core/src/interfaces/IHooks.sol";
+import {PoolKey} from "lib/v4-core/src/types/PoolKey.sol";
 
 contract TokenWithPoolDeploy is BaseScript {
     TokenWithPool internal target;
     address internal _target;
+    PoolKey internal key;
+    bool internal isTokenZero;
 
-    function run() public {
+    function run(address deployer) public {
         IHooks hook = setupHook();
+
         TokenWithPool.PoolInit memory init = TokenWithPool.PoolInit({
             positionManager: positionManager,
             pairedCurrency: Currency.wrap(address(weth)),
@@ -22,7 +26,26 @@ contract TokenWithPoolDeploy is BaseScript {
             hookData: ""
         });
 
+        vm.prank(deployer);
         target = new TokenWithPool(init);
+
+        _target = address(target);
+
+        isTokenZero = Currency.wrap(_target) < init.pairedCurrency
+            ? true
+            : false;
+
+        key = PoolKey({
+            currency0: isTokenZero
+                ? Currency.wrap(_target)
+                : init.pairedCurrency,
+            currency1: isTokenZero
+                ? init.pairedCurrency
+                : Currency.wrap(_target),
+            fee: init.lpFee,
+            tickSpacing: init.tickSpacing,
+            hooks: IHooks(init.hookContract)
+        });
     }
 
     function setupHook() internal virtual returns (IHooks hook) {

@@ -18,6 +18,7 @@ contract FeeOnSwapDeploy is BaseScript, StdCheats {
         TokenWithPoolAndLiquidity.PoolInit memory init = TokenWithPoolAndLiquidity
             .PoolInit({
                 positionManager: positionManager,
+                poolManager: poolManager,
                 permit2: permit2,
                 pairedCurrency: Currency.wrap(address(weth)),
                 hookContract: hook,
@@ -26,7 +27,7 @@ contract FeeOnSwapDeploy is BaseScript, StdCheats {
                 tickSpacing: 60,
                 startingPrice: 79228162514264337593543950336, // 1 to 1
                 hookDataInit: "",
-                hookDataModify: ""
+                hookDataMint: ""
             });
 
         target = new TokenWithPoolAndLiquidity(init);

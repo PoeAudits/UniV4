@@ -12,8 +12,11 @@ gas_limit = 10737418240
 via-ir = true
 
 [rpc_endpoints]
-localhost = "http://localhost:8545"
-base = "https://mainnet.base.org"
+localhost = "127.0.0.1:8545"
+mainnet_cow = "https://rpc.mevblocker.io"
+mainnet_cow_privacy = "https://rpc.mevblocker.io/fullprivacy"
+mainnet_tenderly = "https://mainnet.gateway.tenderly.co/${TENDERLY_API_KEY}"
+mainnet_moralis = "https://site1.moralis-nodes.com/eth/${MORALIS_API_KEY}"
 
 [etherscan]
 unknownchain = { key = "ABCDEFG", url = "https://<etherscan-api-url-for-that-chain>" }

@@ -21,7 +21,7 @@ contract Positions is BaseScript {
     function MintPosition(
         PoolKey memory key,
         MintPositionParams memory mintParams
-    ) internal {
+    ) public {
         bytes memory actions = abi.encodePacked(
             uint8(Actions.MINT_POSITION),
             uint8(Actions.SETTLE_PAIR)
@@ -63,7 +63,7 @@ contract Positions is BaseScript {
 
     function IncreaseLiquidity(
         IncreaseLiquidityParams memory liquidityParams
-    ) internal {
+    ) public {
         require(
             liquidityParams.amount0Max >= liquidityParams.amount0,
             "Max lower than amount0"

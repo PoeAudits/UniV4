@@ -15,6 +15,9 @@ import {Currency, CurrencyLibrary} from "lib/v4-core/src/types/Currency.sol";
 import {PoolKey} from "lib/v4-core/src/types/PoolKey.sol";
 import {IHooks} from "lib/v4-core/src/interfaces/IHooks.sol";
 
+// import {TokenWithPoolDeploy} from "script/TokenWithPoolDeploy.s.sol";
+//
+// contract Setup is Test, TokenWithPoolDeploy {
 import {TokenWithPoolAndLiquidityDeploy} from "script/TokenWithPoolAndLiquidityDeploy.s.sol";
 
 contract Setup is Test, TokenWithPoolAndLiquidityDeploy {
@@ -28,11 +31,9 @@ contract Setup is Test, TokenWithPoolAndLiquidityDeploy {
     mapping(address => string) names;
 
     function setUp() public virtual {
-        vm.createSelectFork("http://127.0.0.1:8545");
+        vm.createSelectFork("localhost");
 
-        vm.startPrank(_deployer);
-        super.run();
-        vm.stopPrank();
+        super.run(_deployer);
 
         vm.prank(_alice);
         address(weth).call{value: 1e18}("");
