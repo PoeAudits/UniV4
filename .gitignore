@@ -1,6 +1,7 @@
 # Compiler files
 cache/
 out/
+.DS_Store
 
 # Ignores development broadcast logs
 !/broadcast
@@ -12,3 +13,10 @@ docs/
 
 # Dotenv file
 .env
+
+#Fuzzers
+medusa
+echidna
+crytic-export
+slither_results.json
+.medusacache

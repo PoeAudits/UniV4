@@ -3,3 +3,5 @@
 @uniswap/permit2/=lib/permit2/
 @uniswap/universal-router/=lib/universal-router/
 @openzeppelin/contracts/=lib/openzeppelin-contracts/contracts
+@chimera/=lib/chimera/src/
+@recon/=lib/setup-helpers/src/

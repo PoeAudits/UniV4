@@ -8,7 +8,7 @@ import {BeforeSwapDelta, toBeforeSwapDelta} from "lib/v4-core/src/types/BeforeSw
 import {PoolKey} from "lib/v4-core/src/types/PoolKey.sol";
 import {BaseHook} from "lib/v4-periphery/src/utils/BaseHook.sol";
 
-contract NormalLiquidityHook is BaseHook {
+contract BinomialLiquidityHook is BaseHook {
     constructor(IPoolManager _poolManager) BaseHook(_poolManager) {}
 
     function getHookPermissions()

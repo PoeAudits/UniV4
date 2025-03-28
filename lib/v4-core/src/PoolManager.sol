@@ -119,7 +119,8 @@ contract PoolManager is IPoolManager, ProtocolFees, NoDelegateCall, ERC6909Claim
         if (key.tickSpacing < MIN_TICK_SPACING) TickSpacingTooSmall.selector.revertWith(key.tickSpacing);
         if (key.currency0 >= key.currency1) {
             CurrenciesOutOfOrderOrEqual.selector.revertWith(
-                Currency.unwrap(key.currency0), Currency.unwrap(key.currency1)
+                Currency.unwrap(key.currency0),
+                Currency.unwrap(key.currency1)
             );
         }
         if (!key.hooks.isValidHookAddress(key.fee)) Hooks.HookAddressNotValid.selector.revertWith(address(key.hooks));
@@ -182,12 +183,11 @@ contract PoolManager is IPoolManager, ProtocolFees, NoDelegateCall, ERC6909Claim
     }
 
     /// @inheritdoc IPoolManager
-    function swap(PoolKey memory key, IPoolManager.SwapParams memory params, bytes calldata hookData)
-        external
-        onlyWhenUnlocked
-        noDelegateCall
-        returns (BalanceDelta swapDelta)
-    {
+    function swap(
+        PoolKey memory key,
+        IPoolManager.SwapParams memory params,
+        bytes calldata hookData
+    ) external onlyWhenUnlocked noDelegateCall returns (BalanceDelta swapDelta) {
         if (params.amountSpecified == 0) SwapAmountCannotBeZero.selector.revertWith();
         PoolId id = key.toId();
         Pool.State storage pool = _getPool(id);
@@ -225,12 +225,15 @@ contract PoolManager is IPoolManager, ProtocolFees, NoDelegateCall, ERC6909Claim
     }
 
     /// @notice Internal swap function to execute a swap, take protocol fees on input token, and emit the swap event
-    function _swap(Pool.State storage pool, PoolId id, Pool.SwapParams memory params, Currency inputCurrency)
-        internal
-        returns (BalanceDelta)
-    {
-        (BalanceDelta delta, uint256 amountToProtocol, uint24 swapFee, Pool.SwapResult memory result) =
-            pool.swap(params);
+    function _swap(
+        Pool.State storage pool,
+        PoolId id,
+        Pool.SwapParams memory params,
+        Currency inputCurrency
+    ) internal returns (BalanceDelta) {
+        (BalanceDelta delta, uint256 amountToProtocol, uint24 swapFee, Pool.SwapResult memory result) = pool.swap(
+            params
+        );
 
         // the fee is on the input currency
         if (amountToProtocol > 0) _updateProtocolFees(inputCurrency, amountToProtocol);
@@ -251,12 +254,12 @@ contract PoolManager is IPoolManager, ProtocolFees, NoDelegateCall, ERC6909Claim
     }
 
     /// @inheritdoc IPoolManager
-    function donate(PoolKey memory key, uint256 amount0, uint256 amount1, bytes calldata hookData)
-        external
-        onlyWhenUnlocked
-        noDelegateCall
-        returns (BalanceDelta delta)
-    {
+    function donate(
+        PoolKey memory key,
+        uint256 amount0,
+        uint256 amount1,
+        bytes calldata hookData
+    ) external onlyWhenUnlocked noDelegateCall returns (BalanceDelta delta) {
         PoolId poolId = key.toId();
         Pool.State storage pool = _getPool(poolId);
         pool.checkPoolInitialized();
