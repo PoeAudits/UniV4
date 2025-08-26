@@ -3,7 +3,7 @@ pragma solidity 0.8.26;
 
 import "test/base/BaseScript.sol";
 import {StdCheats} from "lib/forge-std/src/StdCheats.sol";
-import {TokenWithPoolAndLiquidity, TokenWithPoolAndLiquidityDeployer, PoolInit} from "src/TokenWithPoolAndLiquidity.sol";
+import {TokenWithPoolAndLiquidity, TokenWithPoolAndLiquidityDeployer, Init} from "src/TokenWithPoolAndLiquidity.sol";
 import {FeeOnSwapHook} from "src/Hooks/FeeOnSwapHook.sol";
 import {Currency} from "lib/v4-core/src/types/Currency.sol";
 import {IHooks} from "lib/v4-core/src/interfaces/IHooks.sol";
@@ -20,7 +20,7 @@ contract FeeOnSwapDeploy is BaseScript, StdCheats {
 
     function run() public {
         IHooks hook = setupFeeOnSwap();
-        PoolInit memory init = PoolInit({
+        Init memory init = Init({
             positionManager: positionManager,
             poolManager: poolManager,
             permit2: permit2,

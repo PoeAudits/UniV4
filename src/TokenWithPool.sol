@@ -12,7 +12,7 @@ import {IHooks} from "lib/v4-core/src/interfaces/IHooks.sol";
 
 import {PositionLibrary, CreatePoolParams} from "src/Libraries/PositionLibrary.sol";
 
-struct PoolInit {
+struct Init {
     IPositionManager positionManager;
     Currency pairedCurrency;
     IHooks hookContract;
@@ -25,7 +25,7 @@ struct PoolInit {
 contract TokenWithPool is ERC20("TokenPool", "TP") {
     using PositionLibrary for IPositionManager;
 
-    constructor(PoolInit memory init) {
+    constructor(Init memory init) {
         Currency thisCurrency = Currency.wrap(address(this));
         bool isTokenZero = thisCurrency < init.pairedCurrency ? true : false;
 
@@ -42,6 +42,7 @@ contract TokenWithPool is ERC20("TokenPool", "TP") {
             startingPrice: init.startingPrice,
             hookData: init.hookData
         });
+
         init.positionManager.CreatePool(createParams);
     }
 

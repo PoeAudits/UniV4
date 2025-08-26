@@ -14,7 +14,7 @@ import {IPermit2} from "lib/universal-router/lib/permit2/src/interfaces/IPermit2
 
 import {PositionLibrary, CreatePoolParams, MintPositionParams} from "src/Libraries/PositionLibrary.sol";
 
-struct PoolInit {
+struct Init {
     IPositionManager positionManager;
     IPoolManager poolManager;
     IPermit2 permit2;
@@ -34,7 +34,7 @@ contract TokenWithPoolAndLiquidityDeployer {
     using PositionLibrary for IPositionManager;
     TokenWithPoolAndLiquidity internal deployment;
 
-    constructor(PoolInit memory init) {
+    constructor(Init memory init) {
         deployment = new TokenWithPoolAndLiquidity(init);
 
         deployment.approve(address(init.permit2), init.mintAmount);
@@ -100,7 +100,7 @@ contract TokenWithPoolAndLiquidity is ERC20("TokenPoolLiquidity", "TPL") {
     IPositionManager internal immutable positionManager;
     IPoolManager internal immutable poolManager;
 
-    constructor(PoolInit memory init) {
+    constructor(Init memory init) {
         positionManager = init.positionManager;
         poolManager = init.poolManager;
 

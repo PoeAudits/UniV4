@@ -31,7 +31,7 @@ contract FeeTakingHook is BaseTestHooks {
     uint128 public constant TOTAL_BIPS = 10000;
 
     function afterSwap(
-        address, /* sender **/
+        address /* sender **/,
         PoolKey calldata key,
         IPoolManager.SwapParams calldata params,
         BalanceDelta delta,
@@ -39,29 +39,30 @@ contract FeeTakingHook is BaseTestHooks {
     ) external override onlyPoolManager returns (bytes4, int128) {
         // fee will be in the unspecified token of the swap
         bool specifiedTokenIs0 = (params.amountSpecified < 0 == params.zeroForOne);
-        (Currency feeCurrency, int128 swapAmount) =
-            (specifiedTokenIs0) ? (key.currency1, delta.amount1()) : (key.currency0, delta.amount0());
+        (Currency feeCurrency, int128 swapAmount) = (specifiedTokenIs0)
+            ? (key.currency1, delta.amount1())
+            : (key.currency0, delta.amount0());
         // if fee is on output, get the absolute output amount
         if (swapAmount < 0) swapAmount = -swapAmount;
 
-        uint256 feeAmount = uint128(swapAmount) * SWAP_FEE_BIPS / TOTAL_BIPS;
+        uint256 feeAmount = (uint128(swapAmount) * SWAP_FEE_BIPS) / TOTAL_BIPS;
         manager.take(feeCurrency, address(this), feeAmount);
 
         return (IHooks.afterSwap.selector, feeAmount.toInt128());
     }
 
     function afterRemoveLiquidity(
-        address, /* sender **/
+        address /* sender **/,
         PoolKey calldata key,
-        IPoolManager.ModifyLiquidityParams calldata, /* params **/
+        IPoolManager.ModifyLiquidityParams calldata /* params **/,
         BalanceDelta delta,
         BalanceDelta,
         bytes calldata /* hookData **/
     ) external override onlyPoolManager returns (bytes4, BalanceDelta) {
         assert(delta.amount0() >= 0 && delta.amount1() >= 0);
 
-        uint128 feeAmount0 = uint128(delta.amount0()) * LIQUIDITY_FEE / TOTAL_BIPS;
-        uint128 feeAmount1 = uint128(delta.amount1()) * LIQUIDITY_FEE / TOTAL_BIPS;
+        uint128 feeAmount0 = (uint128(delta.amount0()) * LIQUIDITY_FEE) / TOTAL_BIPS;
+        uint128 feeAmount1 = (uint128(delta.amount1()) * LIQUIDITY_FEE) / TOTAL_BIPS;
 
         manager.take(key.currency0, address(this), feeAmount0);
         manager.take(key.currency1, address(this), feeAmount1);
@@ -70,17 +71,17 @@ contract FeeTakingHook is BaseTestHooks {
     }
 
     function afterAddLiquidity(
-        address, /* sender **/
+        address /* sender **/,
         PoolKey calldata key,
-        IPoolManager.ModifyLiquidityParams calldata, /* params **/
+        IPoolManager.ModifyLiquidityParams calldata /* params **/,
         BalanceDelta delta,
         BalanceDelta,
         bytes calldata /* hookData **/
     ) external override onlyPoolManager returns (bytes4, BalanceDelta) {
         assert(delta.amount0() <= 0 && delta.amount1() <= 0);
 
-        uint128 feeAmount0 = uint128(-delta.amount0()) * LIQUIDITY_FEE / TOTAL_BIPS;
-        uint128 feeAmount1 = uint128(-delta.amount1()) * LIQUIDITY_FEE / TOTAL_BIPS;
+        uint128 feeAmount0 = (uint128(-delta.amount0()) * LIQUIDITY_FEE) / TOTAL_BIPS;
+        uint128 feeAmount1 = (uint128(-delta.amount1()) * LIQUIDITY_FEE) / TOTAL_BIPS;
 
         manager.take(key.currency0, address(this), feeAmount0);
         manager.take(key.currency1, address(this), feeAmount1);

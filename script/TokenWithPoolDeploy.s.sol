@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import "test/base/BaseScript.sol";
-import {TokenWithPool, PoolInit} from "src/TokenWithPool.sol";
+import {TokenWithPool, Init} from "src/TokenWithPool.sol";
 import {Currency} from "lib/v4-core/src/types/Currency.sol";
 import {IHooks} from "lib/v4-core/src/interfaces/IHooks.sol";
 import {PoolKey} from "lib/v4-core/src/types/PoolKey.sol";
@@ -16,7 +16,7 @@ contract TokenWithPoolDeploy is BaseScript {
     function run(address deployer) public {
         IHooks hook = setupHook();
 
-        PoolInit memory init = PoolInit({
+        Init memory init = Init({
             positionManager: positionManager,
             pairedCurrency: Currency.wrap(address(weth)),
             hookContract: hook,

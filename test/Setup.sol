@@ -18,10 +18,11 @@ import {IHooks} from "lib/v4-core/src/interfaces/IHooks.sol";
 // import {TokenWithPoolDeploy} from "script/TokenWithPoolDeploy.s.sol";
 //
 // contract Setup is Test, TokenWithPoolDeploy {
-import {TokenWithPoolAndLiquidityDeploy} from "script/TokenWithPoolAndLiquidityDeploy.s.sol";
+// import {TokenWithPoolAndLiquidityDeploy} from "script/TokenWithPoolAndLiquidityDeploy.s.sol";
+import {UseLpDeploy} from "script/UseLpDeploy.s.sol";
 
-contract Setup is Test, TokenWithPoolAndLiquidityDeploy {
-    address internal _hook = address(0x1088);
+contract Setup is UseLpDeploy {
+    // address internal _hook = address(0xf00);
 
     address _alice = address(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266);
     address _bob = address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8);

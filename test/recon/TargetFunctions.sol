@@ -18,13 +18,5 @@ abstract contract TargetFunctions is
     DoomsdayTargets,
     ManagersTargets
 {
-    function counter_increment() public updateGhosts asActor {}
-
-    function counter_setNumber1(
-        uint256 newNumber
-    ) public updateGhosts asActor {}
-
-    function counter_setNumber2(
-        uint256 newNumber
-    ) public updateGhosts asActor {}
+    // function counter_increment() public updateGhosts asActor {}
 }
